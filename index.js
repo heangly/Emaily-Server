@@ -13,7 +13,7 @@ connectDB()
 const app = express()
 app.use(cors())
 
-app.get('/', (_, res) => res.send('Emaily server is running'))
+app.get('/', (_, res) => res.send('Emaily server is running!!!'))
 
 app.use(
   '/graphql',
