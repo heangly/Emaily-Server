@@ -1,17 +1,22 @@
 const express = require('express')
 const dotenv = require('dotenv')
-const { graphqlHTTP } = require('express-graphql')
 const cors = require('cors')
+const { graphqlHTTP } = require('express-graphql')
 require('colors')
 
 const connectDB = require('./config/db')
 const schema = require('./graphql/schema')
-
-dotenv.config()
-connectDB()
+const googleOAuth = require('./config/googleOAuth')
 
 const app = express()
+
 app.use(cors())
+
+dotenv.config()
+
+connectDB()
+
+googleOAuth(app)
 
 app.get('/', (_, res) => res.send('Emaily server is running!!!'))
 
