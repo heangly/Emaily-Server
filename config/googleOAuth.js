@@ -1,5 +1,6 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
+const User = require('../models/User')
 
 const initializeGoogleStragety = () => {
   passport.use(
@@ -12,9 +13,14 @@ const initializeGoogleStragety = () => {
       },
 
       // after redirect and when user has been granted permission
-      (accessToken, refreshToken, profile, done) => {
+      async (accessToken, refreshToken, profile, done) => {
         // 'accessToken' allows us to access/update the user's information on their google account
         // 'refreshToken' allows us to refresh the access token if it expires
+        const newUser = await User.create({
+          googleId: profile.id
+        })
+
+        console.log(newUser)
       }
     )
   )

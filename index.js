@@ -8,13 +8,11 @@ const connectDB = require('./config/db')
 const schema = require('./graphql/schema')
 const googleOAuth = require('./config/googleOAuth')
 
-const app = express()
-
-app.use(cors())
-
 dotenv.config()
-
 connectDB()
+
+const app = express()
+// app.use(cors())
 
 googleOAuth(app)
 
