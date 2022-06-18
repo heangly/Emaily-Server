@@ -1,6 +1,13 @@
+const {
+  serializeUser,
+  deserializeUser,
+  googleStrategyCallback
+} = require('../utils/passport')
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
-const User = require('../models/User')
+
+serializeUser()
+deserializeUser()
 
 const initializeGoogleStragety = () => {
   passport.use(
@@ -13,15 +20,8 @@ const initializeGoogleStragety = () => {
       },
 
       // after redirect and when user has been granted permission
-      async (accessToken, refreshToken, profile, done) => {
-        // 'accessToken' allows us to access/update the user's information on their google account
-        // 'refreshToken' allows us to refresh the access token if it expires
-        const newUser = await User.create({
-          googleId: profile.id
-        })
-
-        console.log(newUser)
-      }
+      // this callback will automatically get  'accessToken', 'refreshToken', 'profile', 'done' as arguments
+      googleStrategyCallback
     )
   )
 }
