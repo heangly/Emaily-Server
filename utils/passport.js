@@ -1,14 +1,13 @@
-const passport = require('passport')
 const User = require('../models/User')
 
-const serializeUser = () => {
+const serializeUser = (passport) => {
   passport.serializeUser((user, done) => {
     // user.id is the model's id in MongoDB
     done(null, user.id)
   })
 }
 
-const deserializeUser = () => {
+const deserializeUser = (passport) => {
   passport.deserializeUser(async (id, done) => {
     const user = await User.findById(id)
     done(null, user)

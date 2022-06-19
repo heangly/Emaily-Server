@@ -7,7 +7,7 @@ require('colors')
 const connectDB = require('./config/db')
 const schema = require('./graphql/schema')
 const googleOAuth = require('./config/googleOAuth')
-const cookieSession = require('./config/cookieSession')
+// const cookieSession = require('./config/cookieSession')
 
 dotenv.config()
 connectDB()
@@ -15,7 +15,6 @@ connectDB()
 const app = express()
 // app.use(cors())
 
-cookieSession(app)
 googleOAuth(app)
 
 app.get('/', (_, res) => res.send('Emaily server is running!!!'))
