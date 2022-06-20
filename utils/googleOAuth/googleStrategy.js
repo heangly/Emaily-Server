@@ -8,10 +8,8 @@ module.exports = (passport) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL:
-          process.env.NODE_ENV === 'production'
-            ? 'https://emaily-server-project.herokuapp.com/auth/google/callback'
-            : '/auth/google/callback'
+        callbackURL: '/auth/google/callback',
+        proxy: true
       },
 
       // after redirect and when user has been granted permission
