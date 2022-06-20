@@ -4,10 +4,9 @@ const cors = require('cors')
 const { graphqlHTTP } = require('express-graphql')
 require('colors')
 
-const connectDB = require('./config/db')
+const connectDB = require('./utils/db')
 const schema = require('./graphql/schema')
-const googleOAuth = require('./config/googleOAuth')
-// const cookieSession = require('./config/cookieSession')
+const googleOAuth = require('./utils/googleOAuth/index')
 
 dotenv.config()
 connectDB()
@@ -23,11 +22,7 @@ app.use(
   '/graphql',
   graphqlHTTP({
     schema,
-    graphiql: process.env.NODE_ENV === 'development',
-    formatError: (err) => {
-      console.log('formatError', err)
-      return err.message
-    }
+    graphiql: process.env.NODE_ENV === 'development'
   })
 )
 

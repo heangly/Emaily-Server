@@ -4,6 +4,11 @@ const UserSchema = new mongoose.Schema({
   googleId: {
     type: String,
     required: [true, 'Google ID is required']
+  },
+  credits: {
+    type: Number,
+    default: 0,
+    requiredL: [true, 'Credits are required']
   }
 })
 

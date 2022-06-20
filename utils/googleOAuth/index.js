@@ -2,7 +2,7 @@ const {
   serializeUser,
   deserializeUser,
   googleStrategyCallback
-} = require('../utils/passport')
+} = require('./passport')
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const cookieSession = require('./cookieSession')
@@ -47,14 +47,14 @@ const googleOAuth = (app) => {
   redirectAfterPermissionGranted(app)
 
   // convert these route to graphql please
-  app.get('/api/current_user', (req, res) => {
-    res.json({ user: req.user })
-  })
+  // app.get('/api/current_user', (req, res) => {
+  //   res.json({ user: req.user })
+  // })
 
-  app.get('/api/logout', (req, res) => {
-    req.logout()
-    res.json({ user: req.user })
-  })
+  // app.get('/api/logout', (req, res) => {
+  //   req.logout()
+  //   res.json({ user: req.user })
+  // })
 }
 
 module.exports = googleOAuth
