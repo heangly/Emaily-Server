@@ -29,6 +29,16 @@ const googleOAuth = (app) => {
   app.get('/auth/google/callback', passport.authenticate('google'))
 
   // After asking for permission, Redirect after permission granted -> googleStrategyCallback will be called
+
+  //will be deleted soon
+  app.get('/api/current_user', (req, res) => {
+    res.json({ user: req.user })
+  })
+
+  app.get('/api/logout', (req, res) => {
+    req.logout()
+    res.json({ user: req.user })
+  })
 }
 
 module.exports = googleOAuth
