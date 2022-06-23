@@ -3,6 +3,10 @@ const cookieSession = require('./cookieSession')
 
 const initializeGoogleStragety = require('./googleStrategy')
 const User = require('../../models/User')
+const {
+  CLIENT_DEVELOPMENT_URL,
+  CLIENT_PRODUCTION_URL
+} = require('../../constants/URL')
 
 const googleOAuth = (app) => {
   passport.serializeUser((user, done) => {
@@ -26,7 +30,25 @@ const googleOAuth = (app) => {
   )
 
   // Redirect after permission granted
-  app.get('/auth/google/callback', passport.authenticate('google'))
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res, next) => {
+      const clientURL =
+        process.env.NODE_ENV === 'development'
+          ? CLIENT_DEVELOPMENT_URL
+          : CLIENT_PRODUCTION_URL
+      // if success
+      // if (req.user) {
+      //   res.redirect(clientURL)
+      // } else {
+      //   // fail login
+      //   res.redirect('http://localhost:3000/login-failed')
+      // }
+      res.redirect(clientURL)
+      next()
+    }
+  )
 
   // After asking for permission, Redirect after permission granted -> googleStrategyCallback will be called
 

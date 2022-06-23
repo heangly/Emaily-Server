@@ -7,12 +7,23 @@ require('colors')
 const connectDB = require('./utils/db')
 const schema = require('./graphql/schema')
 const googleOAuth = require('./utils/googleOAuth/index')
+const {
+  CLIENT_DEVELOPMENT_URL,
+  CLIENT_PRODUCTION_URL
+} = require('./constants/URL')
 
 dotenv.config()
 connectDB()
 
 const app = express()
-// app.use(cors())
+
+// Must Specify cors ORIGIN(client or browser) here
+app.use(
+  cors({
+    origin: [CLIENT_DEVELOPMENT_URL, CLIENT_PRODUCTION_URL],
+    credentials: true
+  })
+)
 
 googleOAuth(app)
 

@@ -10,7 +10,7 @@ module.exports = {
   //   }
   // },
 
-  user: {
+  currentUser: {
     type: UserType,
     resolve(parentValue, args, context) {
       return context.user
