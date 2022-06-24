@@ -4,9 +4,9 @@ const cookieSession = require('./cookieSession')
 const initializeGoogleStragety = require('./googleStrategy')
 const User = require('../../models/User')
 const {
-  CLIENT_DEVELOPMENT_URL,
-  CLIENT_PRODUCTION_URL
-} = require('../../constants/URL')
+  CLIENT_DEVELOPMENT_URI,
+  CLIENT_PRODUCTION_URI
+} = require('../../constants/URI')
 
 const googleOAuth = (app) => {
   passport.serializeUser((user, done) => {
@@ -33,11 +33,11 @@ const googleOAuth = (app) => {
   app.get(
     '/auth/google/callback',
     passport.authenticate('google'),
-    (req, res, next) => {
+    (req, res) => {
       const clientURL =
         process.env.NODE_ENV === 'development'
-          ? CLIENT_DEVELOPMENT_URL
-          : CLIENT_PRODUCTION_URL
+          ? CLIENT_DEVELOPMENT_URI
+          : CLIENT_PRODUCTION_URI
       // if success
       // if (req.user) {
       //   res.redirect(clientURL)
@@ -45,22 +45,11 @@ const googleOAuth = (app) => {
       //   // fail login
       //   res.redirect('http://localhost:3000/login-failed')
       // }
-      res.redirect(clientURL)
-      next()
+      res.redirect(clientURL + '/surveys')
     }
   )
 
   // After asking for permission, Redirect after permission granted -> googleStrategyCallback will be called
-
-  //will be deleted soon
-  app.get('/api/current_user', (req, res) => {
-    res.json({ user: req.user })
-  })
-
-  app.get('/api/logout', (req, res) => {
-    req.logout()
-    res.json({ user: req.user })
-  })
 }
 
 module.exports = googleOAuth

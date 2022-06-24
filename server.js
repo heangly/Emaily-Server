@@ -8,9 +8,9 @@ const connectDB = require('./utils/db')
 const schema = require('./graphql/schema')
 const googleOAuth = require('./utils/googleOAuth/index')
 const {
-  CLIENT_DEVELOPMENT_URL,
-  CLIENT_PRODUCTION_URL
-} = require('./constants/URL')
+  CLIENT_DEVELOPMENT_URI,
+  CLIENT_PRODUCTION_URI
+} = require('./constants/URI')
 
 dotenv.config()
 connectDB()
@@ -20,7 +20,7 @@ const app = express()
 // Must Specify cors ORIGIN(client or browser) here
 app.use(
   cors({
-    origin: [CLIENT_DEVELOPMENT_URL, CLIENT_PRODUCTION_URL],
+    origin: [CLIENT_DEVELOPMENT_URI, CLIENT_PRODUCTION_URI],
     credentials: true
   })
 )
