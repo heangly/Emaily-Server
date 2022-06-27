@@ -3,10 +3,7 @@ const cookieSession = require('./cookieSession')
 
 const initializeGoogleStragety = require('./googleStrategy')
 const User = require('../../models/User')
-const {
-  CLIENT_DEVELOPMENT_URI,
-  CLIENT_PRODUCTION_URI
-} = require('../../constants/URI')
+const { CLIENT_URI } = require('../../constants/URI')
 
 const googleOAuth = (app) => {
   passport.serializeUser((user, done) => {
@@ -34,10 +31,6 @@ const googleOAuth = (app) => {
     '/auth/google/callback',
     passport.authenticate('google'),
     (req, res) => {
-      const clientURL =
-        process.env.NODE_ENV === 'development'
-          ? CLIENT_DEVELOPMENT_URI
-          : CLIENT_PRODUCTION_URI
       // if success
       // if (req.user) {
       //   res.redirect(clientURL)
@@ -45,7 +38,7 @@ const googleOAuth = (app) => {
       //   // fail login
       //   res.redirect('http://localhost:3000/login-failed')
       // }
-      res.redirect(clientURL + '/surveys')
+      res.redirect(CLIENT_URI + '/surveys')
     }
   )
 

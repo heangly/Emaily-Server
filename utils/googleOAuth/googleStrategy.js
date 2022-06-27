@@ -1,4 +1,5 @@
 const User = require('../../models/User')
+const stripe = require('../stripe/stripeInstance')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 
 module.exports = (passport) => {
@@ -22,8 +23,18 @@ module.exports = (passport) => {
           //done(errorObject, data)
           done(null, exisitingUser)
         } else {
+          const stripeCustomer = await stripe.customers.create(
+            {
+              name: profile.displayName,
+              email: profile.emails[0].value
+            },
+            { apiKey: process.env.STRIPE_SECRET_KEY }
+          )
+
           const newUser = await User.create({
-            googleId: profile.id
+            googleId: profile.id,
+            stripeCustomerId: stripeCustomer.id,
+            credit: 0
           })
           done(null, newUser)
         }
