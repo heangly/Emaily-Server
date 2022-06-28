@@ -14,7 +14,6 @@ module.exports = {
       })
 
       const results = prices.data.map((price) => {
-        console.log(price)
         return {
           id: price.id,
           amount: price.unit_amount

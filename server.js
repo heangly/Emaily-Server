@@ -9,8 +9,11 @@ const schema = require('./graphql/schema')
 const googleOAuth = require('./utils/googleOAuth/index')
 const {
   CLIENT_DEVELOPMENT_URI,
-  CLIENT_PRODUCTION_URI
+  CLIENT_PRODUCTION_URI,
+  CLIENT_URI
 } = require('./constants/URI')
+const stripe = require('./utils/stripe/stripeInstance')
+const User = require('./models/User')
 
 dotenv.config()
 connectDB()
@@ -28,6 +31,33 @@ app.use(
 googleOAuth(app)
 
 app.get('/', (_, res) => res.send('Emaily server is running!!!'))
+
+app.use('/api/checkout/success', async (req, res) => {
+  if (req.query.session_id) {
+    const { status, amount_total } = await stripe.checkout.sessions.retrieve(
+      req.query.session_id,
+      {
+        apiKey: process.env.STRIPE_SECRET_KEY
+      }
+    )
+
+    const userId = req.user.id
+
+    if (userId && status === 'complete') {
+      const user = await User.findById(userId)
+
+      await User.findByIdAndUpdate(userId, {
+        credits: user.credits + amount_total / 100
+      })
+    }
+  }
+
+  res.redirect(CLIENT_URI)
+})
+
+app.use('/api/checkout/fail', (req, res) => {
+  res.redirect(CLIENT_URI)
+})
 
 app.use(
   '/graphql',

@@ -1,5 +1,5 @@
 const { GraphQLID } = require('graphql')
-const { CLIENT_URI } = require('../../constants/URI')
+const { CLIENT_URI, SERVER_URI } = require('../../constants/URI')
 const stripe = require('../../utils/stripe/stripeInstance')
 const checkoutType = require('./type')
 
@@ -21,8 +21,10 @@ module.exports = {
             }
           ],
           //TODO: need to setup these url
-          success_url: CLIENT_URI,
-          cancel_url: CLIENT_URI,
+          success_url:
+            SERVER_URI +
+            '/api/checkout/success?session_id={CHECKOUT_SESSION_ID}',
+          cancel_url: SERVER_URI + '/api/checkout/fail',
           customer: context.user.stripeCustomerId
         },
         {
